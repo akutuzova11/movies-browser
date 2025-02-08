@@ -1,35 +1,58 @@
-import { InfoAboutBirth } from './InfoAboutBirth/index.js';
-import { PersonDescription } from '../MovieDetailsTile/Description/index.js';
-import { Poster, PosterWrapper, TileContent, TileTitle, Wrapper } from "../../StylesDetailsTile/styled.js";
-import posterLiu from "../../../images/posterLiu.png";
-// import { MissingPoster } from '../MissingPoster/index.js';
+import { InfoAboutBirth } from "./InfoAboutBirth/index.js";
+import { PersonDescriptionWrapper } from "../MovieDetailsTile/Description/styled.js";
+import {
+  Poster,
+  PosterWrapper,
+  TileContent,
+  TileTitle,
+  Wrapper,
+} from "../../StylesDetailsTile/styled.js";
+import { MissingPersonPoster } from "../Persons/MissingPersonPoster/index.js";
 
-export const PersonDetailsTile = ({ personDetailsSize }) => {
-
-  const personName = "Liu Yifei";
-  const personDescriptionText = "Liu Yifei was born in Wuhan, Hubei, Province of China on August 25th, 1987. She began modeling at the age of 8 and was trained in singing, dancing and the piano. Moving to the United States at 10 with her mother, Liu lived there for four years.";
-
+export const PersonDetailsTile = ({
+  personDetailsSize,
+  profilePath,
+  name,
+  birthday,
+  placeOfBirth,
+  biography,
+}) => {
+  const formatDate = (date) => {
+    if (date) {
+      const [year, month, day] = date.split("-");
+      return `${day}.${month}.${year}`;
+    }
+    return "Unknown";
+  };
   return (
     <Wrapper personDetailsSize={personDetailsSize}>
       <PosterWrapper personDetailsSize={personDetailsSize}>
-        <Poster src={posterLiu} alt="poster of Liu" />
-        {/* {Poster ? (
-          <Poster src={`https://image.tmdb.org/t/p/w500${posterPath}`} alt={`poster of ${title}`} />
+        {profilePath ? (
+          <Poster
+            src={`https://image.tmdb.org/t/p/w500${profilePath}`}
+            alt={`poster of ${name}`}
+          />
         ) : (
-          <MissingPoster />
-        )} */}
+          <MissingPersonPoster />
+        )}
       </PosterWrapper>
       <TileContent>
-        {personName ?
-          <TileTitle personDetailsSize={personDetailsSize}>
-            {personName}
-          </TileTitle>
-          :
-          <TileTitle>Person name not available</TileTitle>
-        }
-        <InfoAboutBirth personDetailsSize info={{ dateOfBirth: "25.08.1987", placeOfBirth: "Wuhan, Hubei, China" }} />
+        {name ? (
+          <TileTitle personDetailsSize={personDetailsSize}>{name}</TileTitle>
+        ) : (
+          <TileTitle>Title not available</TileTitle>
+        )}
+        <InfoAboutBirth
+          personDetailsSize
+          info={{
+            dateOfBirth: formatDate(birthday),
+            placeOfBirth: placeOfBirth,
+          }}
+        />
       </TileContent>
-      <PersonDescription personDescription={personDescriptionText} />
-    </Wrapper >
-  )
+      {biography && (
+        <PersonDescriptionWrapper>{biography}</PersonDescriptionWrapper>
+      )}
+    </Wrapper>
+  );
 };
