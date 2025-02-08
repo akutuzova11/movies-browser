@@ -14,7 +14,7 @@ import { useIsMobile } from "../../../useIsMobile";
 function PeoplePage() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const movies = useSelector(selectMovies);
+  const movieDetails = useSelector(selectMovies);
   const movieCount = movies?.results?.length || 0;
   const peopleDetails = useSelector(selectPeopleDetails);
 
@@ -33,51 +33,82 @@ function PeoplePage() {
         sectionHeader=""
         body={
           <>
-            <PersonDetailsTile
-              personDetailsSize
-            />
+            {peopleDetails && (
+              <PersonDetailsTile
+                personDetailsSize
+                profilePath={peopleDetails.profile_path}
+                name={peopleDetails.name}
+                birthday={peopleDetails.birthday}
+                placeOfBirth={peopleDetails.place_of_birth}
+                biography={peopleDetails.biography}
+              />
+            )}
             <Article
               articleHeader="Movies - cast"
               body={
                 <Content>
                   {movieCount > 0 ? (
-                    movies.results.map(({ id, poster_path, title, release_date, genre_ids, vote_average, vote_count }) => (
-                      <MovieTile
-                        key={id}
-                        id={id}
-                        posterPath={poster_path}
-                        title={title}
-                        castCharacter={isMobile ? undefined : castCharacter}
-                        releaseDate={isMobile ? release_date.slice(0, 4) : release_date}
-                        genreIds={genre_ids}
-                        voteAverage={vote_average}
-                        voteCount={vote_count}
-                      />
-                    ))
+                    movies.results.map(
+                      ({
+                        id,
+                        poster_path,
+                        title,
+                        release_date,
+                        genre_ids,
+                        vote_average,
+                        vote_count,
+                      }) => (
+                        <MovieTile
+                          key={id}
+                          id={id}
+                          posterPath={poster_path}
+                          title={title}
+                          castCharacter={isMobile ? undefined : castCharacter}
+                          releaseDate={
+                            isMobile ? release_date.slice(0, 4) : release_date
+                          }
+                          genreIds={genre_ids}
+                          voteAverage={vote_average}
+                          voteCount={vote_count}
+                        />
+                      )
+                    )
                   ) : (
                     <p>No movies available</p>
                   )}
                 </Content>
               }
             />
-            < Article
+            <Article
               articleHeader="Movies - crew"
               body={
                 <Content>
                   {movieCount > 0 ? (
-                    movies.results.map(({ id, poster_path, title, release_date, genre_ids, vote_average, vote_count }) => (
-                      <MovieTile
-                        key={id}
-                        id={id}
-                        posterPath={poster_path}
-                        title={title}
-                        crewJob={isMobile ? undefined : crewJob}
-                        releaseDate={isMobile ? release_date.slice(0, 4) : release_date}
-                        genreIds={genre_ids}
-                        voteAverage={vote_average}
-                        voteCount={vote_count}
-                      />
-                    ))
+                    movies.results.map(
+                      ({
+                        id,
+                        poster_path,
+                        title,
+                        release_date,
+                        genre_ids,
+                        vote_average,
+                        vote_count,
+                      }) => (
+                        <MovieTile
+                          key={id}
+                          id={id}
+                          posterPath={poster_path}
+                          title={title}
+                          crewJob={isMobile ? undefined : crewJob}
+                          releaseDate={
+                            isMobile ? release_date.slice(0, 4) : release_date
+                          }
+                          genreIds={genre_ids}
+                          voteAverage={vote_average}
+                          voteCount={vote_count}
+                        />
+                      )
+                    )
                   ) : (
                     <p>No movies available</p>
                   )}
@@ -87,8 +118,7 @@ function PeoplePage() {
           </>
         }
       />
-
-    </Wrapper >
+    </Wrapper>
   );
 }
 
